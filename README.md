@@ -1,6 +1,6 @@
-Getting started with WebGL at a low-level is hard and in many cases you'd be better off with a [high-level library](https://threejs.org/). However, I've found that having an understanding of the low-level API can be useful when trying to understand the tradeoffs these libraries make and how to optimise your usage of them.
+Getting started with WebGL at a low-level is hard and in many cases you'd be better off with a [high-level library](https://threejs.org/). However, I've found that having an understanding of the low-level API can be useful when trying to understand the trade-offs these libraries make and how to optimise your usage of them.
 
-This post introduces a quick reference guide to picking the right low-level draw call for those trying to decipher the difference between `drawArrays`, `drawElements` and their oddly-`ANGLE`'d instanced equilvalents. It will not cover the detail of how to use these calls (e.g. setting up attributes, writing shaders, etc.), just an overview of the method calls themselves, what they're good for and how to go about picking between them.
+This post introduces a quick reference guide to picking the right low-level draw call for those trying to decipher the difference between `drawArrays`, `drawElements` and their oddly-`ANGLE`'d instanced equivalents. It will not cover the detail of how to use these calls (e.g. setting up attributes, writing shaders, etc.), just an overview of the method calls themselves, what they're good for and how to go about picking between them.
 
 [<img src="screenshot.gif" alt="Example showing (clockwise-from top-left) drawArrays, drawElements, drawElementsInstancedANGLE and drawArraysInstancedANGLE">](https://chrisprice.io/which-webgl-draw-call/)
 
@@ -63,7 +63,7 @@ The first call in the extension is the instanced equivalent of `drawArrays` -
 void drawArraysInstancedANGLE(GLenum mode, GLint first, GLsizei count, GLsizei primcount);
 ```
 
-The additional `primcount` argument refers to the number of instances that will be drawn. Instead of drawing a single cluster of triangles, let's draw multiple instances of the cluster, each centered on a different spot -
+The additional `primcount` argument refers to the number of instances that will be drawn. Instead of drawing a single cluster of triangles, let's draw multiple instances of the cluster, each translated to a different spot -
 
 [<img src="drawArraysInstancedANGLE.png" alt="Example showing drawArraysInstancedANGLE">](https://chrisprice.io/which-webgl-draw-call/)
 
@@ -97,7 +97,7 @@ On the horizontal axis we're looking at how many vertices (within an instance) a
 
 Whilst the above rules hold in general, it's important to note that the decision can sometimes be a bit more nuanced. As we move from the top-left towards the bottom-right, we're increasing the complexity of the GPU pipeline for each shader invocation. This will impact performance. 
 
-Conversely as we move from the bottom-right towards the top-left, we're also increasing the size of the buffers that have to be calculated on the CPU, transfered down to the GPU and retained in GPU memory. Again, this will impact performance. 
+Conversely as we move from the bottom-right towards the top-left, we're also increasing the size of the buffers that have to be calculated on the CPU, transferred down to the GPU and retained in GPU memory. Again, this will impact performance. 
 
 In some cases, the choice is clear i.e. when you are rendering entirely disjoint vertices or a single instance. It's also worth noting that you can render anything using any mode (and enough code) as long as performance isn't a concern! However, deciding on what `significant` means for a given use-case is something that is best answered with performance testing.
 
